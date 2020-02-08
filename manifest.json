@@ -12,7 +12,7 @@
   "background": {
     "persistent": false,
     "scripts": [
-      "assets/js/index.js"
+      "assets/js/background.js"
     ]
   },
   "content_scripts": [
@@ -27,11 +27,11 @@
     }
   ],
   "permissions": [
-    "https://*.google.com/",
-    "activeTab"
+    "activeTab",
+    "storage",
+    "tabs"
   ],
   "browser_action": {
-    "default_icon": "assets/image/icon_128.png",
-    "default_popup": "popup.html"
+    "default_icon": "assets/image/icon_128.png"
   }
 }
