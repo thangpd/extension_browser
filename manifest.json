@@ -1,14 +1,17 @@
 {
   "manifest_version": 2,
-  "name": "Reverse Zalo Messenger",
-  "version": "2.1",
-  "description": "Gets information from Google.",
+  "name": "Hoàn tiền mua sắm",
+  "version": "1.0",
+  "description": "Mua sắm thông minh cùng Hoantienmuasam.com",
   "icons": {
-    "16": "assets/image/icon_128.png",
-    "32": "assets/image/icon_128.png",
-    "48": "assets/image/icon_128.png",
-    "128": "assets/image/icon_128.png"
+    "16": "assets/image/icon.png",
+    "32": "assets/image/icon.png",
+    "48": "assets/image/icon.png",
+    "128": "assets/image/icon.png"
   },
+  "web_accessible_resources": [
+    "assets/image/*"
+  ],
   "background": {
     "persistent": false,
     "scripts": [
@@ -20,18 +23,17 @@
       "matches": [
         "<all_urls>"
       ],
+      "css": [
+        "assets/css/extension.css",
+        "assets/css/shared.css"
+      ],
       "js": [
         "assets/js/lib/jquery-3.4.1.min.js",
         "assets/js/content.js"
       ]
     }
   ],
-  "permissions": [
-    "activeTab",
-    "storage",
-    "tabs"
-  ],
   "browser_action": {
-    "default_icon": "assets/image/icon_128.png"
+    "default_icon": "assets/image/icon.png"
   }
 }
