@@ -1,83 +1,132 @@
-console.log('ok content js');
+/*
+   "<all_urls>"
+ "*://tiki.vn/*"
+*/
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toGMTString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+
+var src_image = chrome.extension.getURL("assets/image/icon.png");
 $(document).ready(function () {
-    let src_image = chrome.extension.getURL("assets/image/icon.png");
+    var format_html = '<div id="extension"><div class="ext-banner ext-banner-2" style="background-image: url(\'' + src_image + '\');"> <div class="content"><a href="https://hoantienmuasam.com/" class="action-btn">Kích hoạt hoàn tiền</a>  <a class="ignore-btn">Kích hoạt sau</a>  </div></div> </div>';
+    var format_html_exists = '<div id="extension"><div class="ext-banner ext-banner-2" style="background-image: url(\'' + src_image + '\');"> <div class="content"><a href="#" class="action-btn active">Đã kích hoạt</a>  </div></div> </div>';
 
-    var format_html = '<div id="extension"><div class="ext-banner ext-banner-2" style="background-image: url(\'' + src_image + '\');"> <div class="content"><a class="action-btn">Kích hoạt hoàn tiền</a>  <a class="ignore-btn">Kích hoạt sau</a>  </div></div> </div>';
-    $('body').prepend(format_html);
+    chrome.runtime.onMessage.addListener(gotMessage);
 
+    function gotMessage(res, sender, sendResponse) {
+        // let cookie = getCookie("testtest");
+        // if (cookie == "") {
+        //     setCookie("testtest", "testyesah", 1);
+        // } else {
+        // }
+        toogle_popup();
+    }
 
-    $('.ignore-btn').on('click', function (e) {
-        let extension = $('body').find('#extension');
-        console.log(extension);
+    function toogle_popup() {
+        let extension = $(document).find('#extension');
+        // console.log(extension);
+        if (extension.length === 0) {
+            show_popup();
+        } else {
+            temp_hide_popup();
+        }
+
+    }
+
+    function show_popup() {
+        if (check_cookie_if_exists()) {
+            $('body').append(format_html_exists);
+        } else {
+            $('body').append(format_html);
+        }
+    }
+
+    function success_active() {
+        let action_btn = $(document).find('#extension .action-btn');
+        console.log(action_btn);
+        action_btn.addClass('active');
+        action_btn.html('Đã Kích Hoạt');
+    }
+
+    function auto_hide_when_exists() {
+        if (check_cookie_if_exists()) {
+            $(document).find('.ignore-btn').html('');
+            let content = $(document).find('#extension .content');
+            content.append('<div class="auto-turn-off"></div>');
+            let i = 3;
+            var interval_stop = setInterval(function (e) {
+                if (i === 0) {
+                    set_cookie_temp_hide();
+                    temp_hide_popup();
+                    clearInterval(interval_stop);
+                    return '';
+                }
+                $(document).find('.auto-turn-off').html('Sẽ tắt trong ' + i + ' giây');
+                i--;
+
+            }, 1000, i);
+            // console.log(content);
+        }
+    }
+
+    function temp_hide_popup() {
+        let extension = $(document).find('#extension');
         if (extension) {
             extension.remove();
         }
-    })
-    $('.action-btn').on('click', function (e) {
-        var format_html = '<div class="ext-banner ext-banner-2" style="background-image: url(\'' + src_image + '\');"> <div class="content"><a class="action-btn">Kích hoạt hoàn tiền</a>  <a class="ignore-btn">Kích hoạt sau</a>  </div></div>';
-        $('#extension').html(format_html);
-    })
-
-
-    function setCookie(cname, cvalue, exdays) {
-        var d = new Date();
-        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-        var expires = "expires=" + d.toGMTString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
 
-    function getCookie(cname) {
-        var name = cname + "=";
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
-
-    function checkCookie() {
-        var user = getCookie("username");
-        if (user != "") {
-            alert("Welcome again " + user);
-        } else {
-            user = prompt("Please enter your name:", "");
-            if (user != "" && user != null) {
-                setCookie("username", user, 30);
-            }
+    function check_cookie_if_exists() {
+        switch (window.location.host) {
+            case 'tiki.vn':
+                let cookie_tiki = getCookie("TIKI_B2B_AFFILIATE_INFO");
+                console.log(cookie_tiki)
+                if (cookie_tiki !== "") {
+                    success_active();
+                    return true;
+                } else {
+                    if (getCookie("temp_hide_extension") === "") {
+                        return false;
+                    }
+                }
+                break;
+            default:
+                return false;
         }
     }
 
-
-    let cookie_str = (document.cookie);
-    let cookie_split = cookie_str.split("; ");
-    let cookie_array = [];
-    cookie_split.forEach(function (e) {
-        let splite = e.split("=");
-        cookie_array[splite[0]] = splite[1];
-    })
-    // console.log(cookie_array);
-    // console.log(cookie_array.TIKI_RECOMMENDATION);
-    // console.log(window.location.host);
-    //cookie thay doi?. moi~ lan` cap' ko confirm duoc. hcinh' xac' la` cookie cua a Sang hay khong
-    switch (window.location.host) {
-        case 'tiki.vn':
-            if (cookie_array.TIKI_B2B_AFFILIATE_INFO !== undefined) {
-                // console.log(`ok co cookie ${cookie_array.TIKI_B2B_AFFILIATE_INFO}`);
-            } else {
-                // var promt = confirm("Co muon' hoan` tien` ko?");
-                // if (promt) {
-                //     window.location.href = "https://hoantienmuasam.com/";
-                // }
-            }
-            break;
-
+    function set_cookie_temp_hide() {
+        setCookie("temp_hide_extension", "yes", 1);
     }
 
+    $(document).on('click', '.action-btn', function (e) {
+        auto_hide_when_exists();
+    }).on('click', '.ignore-btn', function (e) {
+        set_cookie_temp_hide();
+        temp_hide_popup();
+    })
+
+    show_popup();
+    auto_hide_when_exists();
 })

@@ -2,12 +2,12 @@
   "manifest_version": 2,
   "name": "Hoàn tiền mua sắm",
   "version": "1.0",
-  "description": "Mua sắm thông minh cùng Hoantienmuasam.com",
+  "description": "Smart shopping with hoantianmuasam.com. This extension will notify you when forgot to active redeem when you shopping",
   "icons": {
-    "16": "assets/image/icon.png",
-    "32": "assets/image/icon.png",
-    "48": "assets/image/icon.png",
-    "128": "assets/image/icon.png"
+    "16": "assets/image/icon16.png",
+    "32": "assets/image/icon32.png",
+    "48": "assets/image/icon48.png",
+    "128": "assets/image/icon128.png"
   },
   "web_accessible_resources": [
     "assets/image/*"
@@ -21,11 +21,10 @@
   "content_scripts": [
     {
       "matches": [
-        "<all_urls>"
+        "*://tiki.vn/*"
       ],
       "css": [
-        "assets/css/extension.css",
-        "assets/css/shared.css"
+        "assets/css/extension.css"
       ],
       "js": [
         "assets/js/lib/jquery-3.4.1.min.js",
