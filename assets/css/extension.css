@@ -1,0 +1,74 @@
+#extension {
+    border: 1px solid black;
+    width: 400px;
+    position: fixed;
+    z-index: 2200;
+    right: 10px;
+    top: 10px;
+}
+
+.ext-banner {
+    width: 100%;
+    max-width: 500px;
+    padding-left: 0px;
+    background-position: 50px center;
+    background-repeat: no-repeat;
+    background-color: #fff;
+    background-size: auto 70%;
+    margin: 0 auto;
+}
+
+.ext-banner.ext-banner-1 {
+    background-image: url("../image/icon.png");
+}
+
+.ext-banner.ext-banner-2 {
+    background-image: url("../image/icon.png");
+}
+
+.ext-banner .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 14px 14px 145px;
+}
+
+.ext-banner .content .action-btn {
+    color: #D5232D;
+    border: 1px solid #D5232D;
+    padding: 10px 20px;
+    font-size: 17px;
+    display: table;
+}
+
+.ext-banner .content .action-btn:hover {
+    cursor: pointer;
+    background: #D5232D;
+    color: #fff;
+}
+
+.ext-banner .content .action-btn.active {
+    color: #33d53c;
+    border: 1px solid #3dd537;
+    padding: 10px 20px;
+    font-size: 17px;
+    display: table;
+}
+
+.ext-banner .content .action-btn.active:hover {
+    background: #5ed533;
+    color: #fff;
+}
+
+
+.ext-banner .content .ignore-btn {
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 10px;
+    display: table;
+}
+
+.ext-banner .content .ignore-btn:hover {
+    text-decoration: underline;
+}
