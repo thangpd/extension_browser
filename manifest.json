@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Hoàn tiền mua sắm",
-  "version": "1.0",
-  "description": "Smart shopping with hoantianmuasam.com. This extension will display a modal and link to our website when you didn't active your key to get redeem from our website.",
+  "version": "1.1",
+  "description": "This extension will display a modal and link to our website when you didn't active your key to get redeem from our website.",
   "icons": {
     "16": "assets/image/icon16.png",
     "32": "assets/image/icon32.png",

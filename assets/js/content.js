@@ -26,13 +26,15 @@ function getCookie(cname) {
     return "";
 }
 
-
-var src_image = chrome.extension.getURL("assets/image/icon.png");
+if (chrome.extension != undefined)
+    var src_image = chrome.extension.getURL("assets/image/icon.png");
 $(document).ready(function () {
     var format_html = '<div id="extension"><div class="ext-banner ext-banner-2" style="background-image: url(\'' + src_image + '\');"> <div class="content"><a href="https://hoantienmuasam.com/" class="action-btn">Kích hoạt hoàn tiền</a>  <a class="ignore-btn">Kích hoạt sau</a>  </div></div> </div>';
     var format_html_exists = '<div id="extension"><div class="ext-banner ext-banner-2" style="background-image: url(\'' + src_image + '\');"> <div class="content"><a href="#" class="action-btn active">Đã kích hoạt</a>  </div></div> </div>';
 
-    chrome.runtime.onMessage.addListener(gotMessage);
+
+    if (chrome != undefined)
+        chrome.runtime.onMessage.addListener(gotMessage);
 
     function gotMessage(res, sender, sendResponse) {
         // let cookie = getCookie("testtest");
@@ -40,6 +42,7 @@ $(document).ready(function () {
         //     setCookie("testtest", "testyesah", 1);
         // } else {
         // }
+        console.log('okj');
         toogle_popup();
     }
 
@@ -47,6 +50,7 @@ $(document).ready(function () {
         let extension = $(document).find('#extension');
         // console.log(extension);
         if (extension.length === 0) {
+            console.log('show popup')
             show_popup();
         } else {
             temp_hide_popup();
@@ -101,6 +105,7 @@ $(document).ready(function () {
         switch (window.location.host) {
             case 'tiki.vn':
                 let cookie_tiki = getCookie("TIKI_B2B_AFFILIATE_INFO");
+                console.log('ok');
                 console.log(cookie_tiki)
                 if (cookie_tiki !== "") {
                     success_active();
@@ -129,4 +134,22 @@ $(document).ready(function () {
 
     show_popup();
     auto_hide_when_exists();
+    $('body').append(format_login_form);
 })
+
+$(".email-signup").hide();
+$("#signup-box-link").click(function(){
+    $(".email-login").fadeOut(100);
+    $(".email-signup").delay(100).fadeIn(100);
+    $("#login-box-link").removeClass("active");
+    $("#signup-box-link").addClass("active");
+});
+$("#login-box-link").click(function(){
+    $(".email-login").delay(100).fadeIn(100);;
+    $(".email-signup").fadeOut(100);
+    $("#login-box-link").addClass("active");
+    $("#signup-box-link").removeClass("active");
+});
+
+
+
